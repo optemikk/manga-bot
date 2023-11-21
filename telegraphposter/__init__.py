@@ -1,0 +1,1 @@
+from telegraphposter.telegraph_poster import telegraph_poster
