@@ -22,17 +22,23 @@ class TelegraphPoster:
         [html_content_list.append(f'<img src="{img}">') for img in content_list]
         html_content_list.append('\n@mangaposter https://t.me/mangaposter')
         html_content = '\n'.join(html_content_list)
-        # exists = await self.is_page_exists(path)
         exists = await manga_db.is_manga_exists(title=title_end)
         if exists:
             # response = await self.th.edit_page(path=await manga_db.get_manga_path(title=title_end), title=title_start, html_content=html_content, return_content=True)
             # await self.th.edit_page(path=response['path'], title=title_end, html_content=html_content)
             response = await manga_db.get_manga_info(title=title_end)
+            print(response)
         else:
             response = await self.th.create_page(title=title_start, html_content=html_content, return_content=True)
             await self.th.edit_page(path=response['path'], title=title_end, html_content=html_content)
-        path = response['path']
-        await manga_db.add_volume(title=title_end, path=path, telegraph_url=response['url'], source_url=source_url)
+            path = response['path']
+            await manga_db.add_volume(title=title_end, path=path, telegraph_url=response['url'], source_url=source_url)
+        print(response)
+
+        try:
+            return response['url']
+        except:
+            return response['telegraph_url']
 
 
 telegraph_poster = TelegraphPoster(access_token)

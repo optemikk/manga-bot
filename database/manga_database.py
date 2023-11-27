@@ -4,7 +4,6 @@ import asyncio
 
 class MangaDatabase(Database):
     async def add_volume(self, title: str, path: str, telegraph_url: str, source_url: str):
-        print(await self.is_manga_exists(title))
         if not await self.is_manga_exists(title):
             self.c.execute("INSERT INTO manga VALUES (?, ?, ?, ?)", (title, path, telegraph_url,
                 'https://readmanga.live' + source_url if 'readmanga.live' not in source_url else source_url))

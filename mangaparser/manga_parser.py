@@ -22,7 +22,7 @@ class MangaParser:
                 data = data[6].text.split('\n')[6].split('?')
                 send = list()
                 for i in data:
-                    if 'auto' in i:
+                    if 'auto' in i and 'xcredit' not in i and 'xhelp' not in i:
                         send.append('https://one-way.work/' + i.split('"')[-1])
                 return send
 
@@ -33,7 +33,7 @@ class MangaParser:
 
                 json_ = await response.json()
                 if json_['suggestions'][0]['value'] != 'Ничего не найдено':
-                    return [[i['value'], i['link'], ' '.join(i['names']), i['thumbnail'].replace('_p.jpg', '_o.png')]
+                    return [[i['value'], i['link'], ' '.join(i['names']), i['thumbnail'].replace('_p.jpg', '.jpg')]
                             for i in json_['suggestions']]
                 else:
                     return [None]
@@ -63,8 +63,18 @@ class MangaParser:
             'vols': vols_urls
         }
 
+    async def get_request(self, url: str):
+        async with aiohttp.ClientSession() as session:
+            response = await session.get(url=url, cookies=get_manga_cookies)
+            return response
+
 
 manga_parser = MangaParser()
+async def main():
+    data = await manga_parser.search('монолог')
+    html = await manga_parser.open_page(data[2][1])
+    vols = await manga_parser.get_vols(html)
+    print(vols)
+
 if __name__ == '__main__':
-    print(asyncio.run(manga_parser.search(search='мой телохранитель')))
-    # asyncio.run(parser.get_manga(url='https://readmanga.live/moi_telohranitel__A5327/vol1/1'))
+    asyncio.run(main())

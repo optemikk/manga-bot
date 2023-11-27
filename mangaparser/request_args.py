@@ -26,8 +26,7 @@ search_headers = {
 search_params = {
     'query': '',
     'types[]': [
-        'CREATION',
-        'FEDERATION_MANGA_SUBJECT',
+        'CREATION'
     ],
 }
 

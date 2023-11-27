@@ -7,15 +7,20 @@ class Database:
         self.db = sqlite3.connect(database='database.sqlite')
         self.c = self.db.cursor()
 
-        self.c.execute(f'''CREATE TABLE IF NOT EXISTS users (
+        self.c.execute('''CREATE TABLE IF NOT EXISTS users (
                         user_id INT
                 )''')
-        self.c.execute(f'''CREATE TABLE IF NOT EXISTS manga (
+        self.c.execute('''CREATE TABLE IF NOT EXISTS manga (
                                 title TEXT,
                                 path TEXT,
                                 telegraph_url TEXT,
                                 source_url TEXT
                         )''')
+        self.c.execute('''CREATE TABLE IF NOT EXISTS users_service (
+                                user_id INT,
+                                message_id INT,
+                                status TEXT
+        )''')
 
     def create_table(self, table):
         try:

@@ -1,1 +1,1 @@
-from mangaparser.mangaparser import manga_parser
+from mangaparser.manga_parser import manga_parser
